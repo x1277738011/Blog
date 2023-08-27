@@ -1,0 +1,154 @@
+/* 该文件存放多个页面都需要使用的公共样式 */
+
+/* 一般写浏览器 要先清楚浏览器的默认样式 :使用通配符选择器*/
+ * {
+    /* 外边距 */
+    margin: 0; 
+    /* 内边距  */
+    padding: 0;
+    /* 边框和内边距尺寸不会撑大盒子 */
+    box-sizing: border-box;
+ }
+/* 如果想要给整个页面设置背景，就需要给body标签设置背景！
+那么就需要让body标签先撑满浏览器窗口！ */
+/*html {*/
+/*    !* 设置html的高度和其父元素浏览器一样高 *!*/
+/*    height: 100%;*/
+/*}*/
+html,body {
+    /* 当前的body并不是铺满整个浏览器窗口的 */
+    /* body宽度和浏览器一样宽，但是高度并没有有浏览器那么高，所以进行设置 */
+    /* 设置body的高度和其父元素html一样高 */
+    height: 100%;
+    /*引入背景图*/
+    background-image: url(../img/blogmain.png);
+    /* 设置位置垂直、水平居中 */
+    background-position: center center;
+    /* 设置不重复出现 */
+    background-repeat: no-repeat;
+    /* 设置尺寸：尽量伸展开 */
+    background-size: cover;
+
+}
+.nav {
+    width: 100%;
+    /* 导航栏高度普遍都是50px */
+    height: 50px;
+    /* 注意0就是全透明的，1就是完全不透明的 */
+    background-color: rgba(50,50,50,0.5);
+    /* 文字颜色 */
+    color: white;
+    /* 弹性布局 */
+    display: flex;
+    /* 水平方向靠左布局 */
+    justify-content: left;
+    /* 竖直方向居中对齐 */
+    align-items: center;
+
+}
+.nav img {
+    width: 40px;
+    height: 40px;
+    /* 添加左右页边距 */
+    margin-left: 30px;
+    margin-right: 10px;
+    /* 设置圆形:半径设置为尺寸的一半！！ */
+    border-radius: 50%;
+}
+.nav .spacer {
+    /* 设置成百分比的形式其实就是：以父元素为基准来设置当前的尺寸 */
+    width: 70%;
+}
+/* 需要对超链接进行设置：去掉下划线、加间距、该颜色 */
+.nav a {
+    color: white;
+    /* 去掉下划线 */
+    /* 所谓的文本装饰就是：上划线、下划线、删除线，设为none就是全都没有 */
+    text-decoration: none;
+    /* 设置内边距：上下0 左右边10 */
+    /* 内边距可以让点击的有效区域大一些 */
+    padding: 0 10px;
+}
+
+/*!* 版心样式设置 *!*/
+/*.container {*/
+/*    width: 1000px;*/
+/*    !* 设置版心水平居中 *!*/
+/*    margin: 0 auto;*/
+/*    !* 设置版心高度：整个页面-导航栏 *!*/
+/*    !* 100% 表示父元素高度 *!*/
+/*    !* 减号两侧务必有一个空格，不能没有！！为了和CSS中的脊柱命名法进行区分 *!*/
+/*    height: calc(100% - 50px);*/
+
+/*    !* div会换行，所以使用弹性布局使得在同一行上 *!*/
+/*    display: flex;*/
+/*    !* 设置两个模块中间有间隙 *!*/
+/*    justify-content: space-between;*/
+/*}*/
+/* 页面内容容器, 版心 */
+.container {
+    /* 使用 calc 计算高度 */
+    height: calc(100% - 50px);
+    /* 设置版心宽度 */
+    width: 1000px;
+    /* 水平居中 */
+    margin: 0 auto;
+    /* 使用弹性布局 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 左侧部分, 用来放置用户信息 */
+.container-left {
+    height: 100%;
+    width: 200px;
+}
+
+/* 右侧部分, 用来放置正文 */
+.container-right {
+    height: 100%;
+    /* 和左侧部分中间留出 5px 间隙 */
+    width: 795px;
+    /* 如果内容溢出就自动加上滚动条 */
+    overflow: auto;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+}
+
+/* 展示用户信息的卡片 */
+.card {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    padding: 30px;
+}
+
+/* 用户头像 */
+.card img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+}
+
+/* 用户名 */
+.card h3 {
+    text-align: center;
+    padding: 10px;
+}
+
+/* 用户 github 链接 */
+.card a {
+    display: block;
+    text-align: center;
+    color: #999;
+    text-decoration: none;
+    padding: 10px;
+}
+
+/* 展示文章数目的面板 */
+.card .counter {
+    padding: 5px;
+    display: flex;
+    justify-content: space-around;
+}
+

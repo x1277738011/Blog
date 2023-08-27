@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加博客</title>
+    <!-- 引入自己写的样式 -->
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/blog_edit.css">
+    <!-- 引入 editor.md 的依赖 -->
+    <link rel="stylesheet" href="../editor.md/css/editormd.min.css" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../editor.md/editormd.js"></script>
+    <script src="../js/common.js"></script>
+</head>
+<body>
+<div class="nav">
+    <!--  导航栏  -->
+    <img src="../img/blog-ys.jpg" alt="">
+    <span class="title">金旺小站</span>
+    <!--        -->
+    <div class="spacer"></div>
+    <a href="javascript:toHtml(1)">全部博客</a>
+    <a href="javascript:toHtml(2)">我的博客</a>
+    <a href="javascript:toHtml(3)">草稿箱</a>
+    <a href="javascript:logout();">注销</a>
+</div>
+<!-- 编辑框容器 -->
+<div class="blog-edit-container">
+    <!-- 标题编辑区 -->
+    <div class="title">
+        <input type="text" id="title">&nbsp;&nbsp;
+        <button onclick="mysub();">提交博客</button>&nbsp;&nbsp;
+        <button onclick="addDraft();">保存草稿</button>
+    </div>
+    <!-- 创建编辑器标签 -->
+    <div id="editorDiv">
+        <textarea id="editor-markdown" style="display:none;"></textarea>
+    </div>
+</div>
+<script>
+    var editor;
+    function initEdit(md) {
+        // 编辑器设置
+        editor = editormd("editorDiv", {
+            // 这里的尺寸必须在这里设置. 设置样式会被 editormd 自动覆盖掉.
+            width: "100%",
+            // 高度 100% 意思是和父元素一样高. 要在父元素的基础上去掉标题编辑区的高度
+            height: "calc(100% - 50px)",
+            // 编辑器中的初始内容
+            markdown: md,
+            // 指定 editor.md 依赖的插件路径
+            path: "../editor.md/lib/",
+            saveHTMLToTextarea: true //
+        });
+
+    }
+    initEdit("# 在这里写下一篇博客"); // 初始化编译器的值
+
+    var isSub=false;
+    // 添加为草稿
+    function addDraft() {
+        var  title=jQuery("#title");
+        if(title.val()==""&editor.getValue()=="# 在这里写下一篇博客"){
+            alert("文章标题内容均为空，不建议保存至草稿箱中！");
+            return ;
+        }
+        jQuery.ajax({
+            url: "/blog/addsave",
+            type: "POST",
+            data: {"title":title.val(),"content":editor.getValue()},
+            success:function (result){
+                if (result != null && result.code == 200) {
+                    isSub=true;
+                    alert("保存成功！可在我的草稿箱中查看！");
+                } else {
+                    alert("保存草稿失败，请稍后再试！");
+                }
+            }
+        })
+
+    }
+    function toHtml(i){
+        if(isSub==false){
+            if(confirm("是否要保存草稿？")){
+                addDraft();
+                if(isSub==false){
+                    return;
+                }
+            }
+        }
+        if(i==1){
+            location.href="alllist.html";
+        }else if(i==2){
+            location.href="myblog_list.html";
+        }else if(i==3){
+            location.href="mydraft.html";
+        }
+    }
+
+    function mysub(){
+        //非空校验
+        var title=jQuery("#title").val();
+        if(title==""){
+            alert("请先输入标题！");
+            return ;
+        }
+        if(editor.getValue()==""){
+            alert("请先输入文章内容！");
+            return ;
+        }
+        jQuery.ajax({
+            url:"/blog/add",
+            type:"POST",
+            data:{"title":title,"content":editor.getValue()},
+            success:function(result){
+                if(result!=null&&result.code==200&&result.data==1){
+                    isSub=true;
+                    if(confirm("恭喜添加成功！是否返回我的博客页？")){
+                        location.href="myblog_list.html";
+                    }else{
+                        location.href=location.href;
+                    }
+                }else{
+                    alert("添加失败！请稍后再试！");
+                }
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

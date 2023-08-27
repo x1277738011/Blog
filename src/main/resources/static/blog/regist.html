@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- 兼容声明   -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/login.css">
+    <script src="../js/jquery.min.js"></script>
+</head>
+<body>
+    <div class="nav">
+        <!--  导航栏  -->
+        <img src="../img/blog-ys.jpg" alt="">
+        <span class="title">金旺小站</span>
+        <!--        -->
+        <div class="spacer"></div>
+        <a href="blog_list.html">游客访问</a>
+    </div>
+    <!--登录框-->
+    <div class="login-container">
+            <div class="login-dialog">
+                <h3>Regist</h3>
+                <div class="row">
+                    <span>用户名</span>
+                    <input type="text" id="username" name="username">
+                </div>
+                <div class="row">
+                    <span>密码</span>
+                    <input type="password" id="password" name="password">
+                </div>
+                <div class="row">
+                    <!-- 修改登录按钮 -->
+                    <button id="submit" onclick="mysub();">提交</button>
+                </div>
+            </div>
+    </div>
+
+</body>
+<script>
+    mysub = function () {
+        var userNmae = jQuery("#username")
+        var password = jQuery("#password")
+        if (userNmae.val() == "") {
+            alert("用户名不能为空");
+            userNmae.focus();
+            return ;
+        }
+        if (password.val() == ""){
+            alert("请输入密码");
+            password.focus();
+            return ;
+        }
+        jQuery.ajax({
+            url: "/blog/regist",
+            type: "POST",
+            data: {"username":userNmae.val(),"password":password.val()},
+            success: function (result) {
+                if (result != null && result.code == 0 && result.data != null){
+                    location.href="../blog/login.html";
+                }else {
+                    alert("登录失败，用户名或密码错误!");
+                }
+            }
+        })
+    }
+</script>
+</html>
